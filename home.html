@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Document</title>
+    <title>Hotbucks</title>
 
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
         integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
@@ -43,6 +43,11 @@
         .amount {
             display: inline-block;
         }
+
+        .amount_block {
+            display: inline-block;
+            margin: 30px;
+        }
     </style>
 
 </head>
@@ -53,10 +58,9 @@
         <img class="info_icon" src="./assets/info_icon.png" width="30px" height="30px">
     </div>
 
-    <div class="menu" id="menu">
-
-    </div>
-
+    <div class="menu" id="menu"></div>
+    <div class="totalPrice">總價:<input class="amount col-md-4" id="totalPrice" type="text" class="form-control" value="0"
+            re></div>
     <script>
         var memu_name = ['焦糖星冰樂', '焦糖可可星冰樂', '英式紅茶', '冰蜜柚紅茶',]
         var menu_price = [130, 145, 110, 125]
@@ -68,10 +72,37 @@
                 menu_string += `<li class="list-group-item"><img class="product_img" src="./assets/product/${menu_img[i]}.jpg">${memu_name[i]}
                     ${menu_price[i]}元`
 
-                menu_string += `<div class="amount"><img class="plus_minus" src="./assets/plus.png"><input class="amount" type="text" class="form-control"><img class="plus_minus" src="./assets/minus.png"></div></li>`
+                menu_string += `<div class="amount_block">`
+                menu_string += `<img class="plus_minus" onclick="clickPlus('innum${i}',${menu_price[i]})" src="./assets/plus.png">`
+                menu_string += `<input class="amount col-md-3" id="innum${i}" type="text" class="form-control" value="0">`
+                menu_string += `<img class="plus_minus" onclick="clickMinus('innum${i}',${menu_price[i]})" src="./assets/minus.png"></div></li>`
             }
             document.getElementById('menu').innerHTML = menu_string
         }
+
+        function clickPlus(orderNum, product_price) {
+            var num = document.getElementById(orderNum).value
+            num = parseInt(num);
+            num++   //每點一次+數量就增加 1 
+            document.getElementById(orderNum).value = num   //顯示增加後的數量
+            var sMoney = parseInt(document.getElementById("totalPrice").value)
+            sMoney += 1 * product_price     //計算總金額
+            document.getElementById("totalPrice").value = sMoney    //顯示總金額
+        }
+
+        function clickMinus(orderNum, product_price) {
+            var num = document.getElementById(orderNum).value
+            num = parseInt(num);
+            num--   //每點一次+數量就減少 1 
+            if (num < 0) { num = 0 }    //排除顯示負數的情況 並重新預設為0
+            document.getElementById(orderNum).value = num   //顯示減少後的數量
+            var sMoney = parseInt(document.getElementById("totalPrice").value)
+            sMoney -= 1 * product_price      //計算總金額
+            if (sMoney < 0) { sMoney = 0 } //排除總金額顯示負數的情況 並重新預設為0
+            document.getElementById("totalPrice").value = sMoney    //顯示總金額
+
+        }
+
     </script>
 </body>
 
