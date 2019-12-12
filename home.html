@@ -93,11 +93,14 @@
         function clickMinus(orderNum, product_price) {
             var num = document.getElementById(orderNum).value
             num = parseInt(num);
+            var tmp = num
             num--   //每點一次+數量就減少 1 
             if (num < 0) { num = 0 }    //排除顯示負數的情況 並重新預設為0
             document.getElementById(orderNum).value = num   //顯示減少後的數量
             var sMoney = parseInt(document.getElementById("totalPrice").value)
-            sMoney -= 1 * product_price      //計算總金額
+            if (tmp != 0) {
+                sMoney -= 1 * product_price      //計算總金額
+            }
             if (sMoney < 0) { sMoney = 0 } //排除總金額顯示負數的情況 並重新預設為0
             document.getElementById("totalPrice").value = sMoney    //顯示總金額
 
