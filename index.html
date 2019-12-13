@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Hotbucks</title>
+
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+        integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"
+        integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n"
+        crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
+        integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
+        crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"
+        integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6"
+        crossorigin="anonymous"></script>
+
+    <style>
+        .Navbar {
+            width: 100%;
+            display: inline-block;
+            text-align: center;
+        }
+
+        .navbar-brand {
+            font-size: 47px;
+        }
+
+        .info_icon {
+            float: right;
+            width: 40px;
+            height: 40px
+        }
+
+        .amount {
+            display: inline-block;
+        }
+
+        .product_img {
+            height: 150px;
+            width: 150px;
+        }
+
+        .amount_block {
+            /* display: inline-block; */
+            margin: 30px;
+            float: right;
+        }
+
+        .plus_minus {
+            height: 30px;
+            width: 30px;
+        }
+
+        .purchase_icon {
+            /* display: inline-block; */
+            float: right;
+            width: 45px;
+            height: 45px
+        }
+
+        .end_block {
+            display: inline-block;
+        }
+
+        .totalPrice {
+            display: inline-block;
+            text-align: left;
+            font-size: large;
+        }
+
+        .totalAmount {
+            display: inline-block;
+            text-align: left;
+            font-size: large;
+        }
+
+        .order_amount {
+            display: inline-block;
+            text-align: left;
+            font-size: large;
+        }
+    </style>
+
+</head>
+
+<body onload='makingMenu()'>
+    <div class="Navbar">
+        <div class="navbar-brand">
+            <b>Hotbucks</b></div>
+        <img class="info_icon" src="./assets/info_icon.png">
+    </div>
+
+    <div class="menu" id="menu"></div>
+    <div class="end_block">
+        <div class="totalPrice">總金額: <input class="amount col-md-3" id="totalPrice" type="text" class="form-control"
+                value="0">
+        </div>
+
+        <div class="totalAmount">總數量: <input class="amount col-md-3" id="totalAmount" type="text" class="form-control"
+                value="0">
+        </div>
+        <div class="purchase"><img class="purchase_icon" src="./assets/purchase.png"></div>
+    </div>
+    <class="order_amount">
+        <br>數量: <input class="order col-md-3" id="order_amount" type="text" class="form-control" value="0"></br>
+        </div>
+
+        <script>
+            /*
+            Product = [
+                '焦糖星冰樂','drink1',130
+                '焦糖可可星冰樂','drink2',145
+                '英式紅茶','drink3',110
+                '冰蜜柚紅茶','drink4',125
+                '太妃核果風味那堤','drink5',145
+                '耶誕雪人巧克力那堤','drink6',150
+                '法式千層薄餅','cake1',95
+                '咖啡巧克力松露蛋糕','cake2',85
+                '提拉米蘇千層薄餅','cake3',100
+                '可可伯爵薄餅','cake4',130`
+                ]
+            */
+            var memu_name = ['焦糖星冰樂', '焦糖可可星冰樂', '英式紅茶', '冰蜜柚紅茶', '太妃核果風味那堤', '耶誕雪人巧克力那堤', '法式千層薄餅', '咖啡巧克力松露蛋糕', '提拉米蘇千層薄餅', '可可伯爵薄餅']
+            var menu_img = ['drink1', 'drink2', 'drink3', 'drink4', 'drink5', 'drink6', 'cake1', 'cake2', 'cake3', 'cake4']
+            var menu_price = [130, 145, 110, 125, 145, 150, 95, 85, 100, 130]
+
+            var menu_string = "";   //商品清單
+            function makingMenu() {
+                for (var i = 0; i < memu_name.length; i++) {
+                    menu_string += `<li class="list-group-item"><img class="product_img" src="./assets/product/${menu_img[i]}.jpg">${memu_name[i]}
+                    ${menu_price[i]}元`
+
+                    menu_string += `<div class="amount_block">`
+                    // 數量增加
+                    menu_string += `<img class="plus_minus" onclick="clickPlus('innum${i}',${menu_price[i]})" src="./assets/plus.png">`
+                    menu_string += `<input class="amount col-md-3" id="innum${i}" type="text" class="form-control" value="0">`
+                    // 數量減少
+                    menu_string += `<img class="plus_minus" onclick="clickMinus('innum${i}',${menu_price[i]})" src="./assets/minus.png"></div></li>`
+
+                    //save_order();   //呼叫函式存取購買清單
+                }
+                document.getElementById('menu').innerHTML = menu_string
+            }
+            var order_string = "";  // 儲存購買清單
+            // onclick="save_order('bnum${i}',${menu_price[i]})" 
+            function save_order(save_num, save_price) {
+                var num = document.getElementById(save_num).value;
+                num = parseInt(num);
+                for (var i = 0; i < memu_name.length; i++) {
+                    if (num != 0) {
+                        order_string += `<li class="list_order_group"><img calss="product_img" src="./assets/product/${menu_img[i]}.jpg">${memu_name[i]}${menu_price[i]}元</li>`
+                        // onclick = "clickPurchase('buy_num${i}',${menu_price[i]})">
+                    }
+                }
+            }
+            /*
+            function clickPurchase() {
+    
+            }*/
+            function clickPlus(orderNum, product_price) {
+                var num = document.getElementById(orderNum).value
+                num = parseInt(num);
+                num++   //每點一次+數量就增加 1 
+                document.getElementById(orderNum).value = num   //顯示增加後的數量
+                document.getElementById("totalAmount").value = num;
+                var sMoney = parseInt(document.getElementById("totalPrice").value);
+                sMoney += 1 * product_price     //計算總金額
+                document.getElementById("totalPrice").value = sMoney    //顯示總金額
+            }
+
+            function clickMinus(orderNum, product_price) {
+                var num = document.getElementById(orderNum).value
+                num = parseInt(num);
+                var tmp = num
+                num--   //每點一次+數量就減少 1 
+                if (num < 0) { num = 0 }    //排除顯示負數的情況 並重新預設為0
+                document.getElementById(orderNum).value = num   //顯示減少後的數量
+                document.getElementById("totalAmount").value = num;
+                var sMoney = parseInt(document.getElementById("totalPrice").value)
+                if (tmp != 0) {     //排除總價扣除沒有購買商品之金額
+                    sMoney -= 1 * product_price      //計算總金額
+                }
+                if (sMoney < 0) { sMoney = 0 } //排除總金額顯示負數的情況 並重新預設為0
+                document.getElementById("totalPrice").value = sMoney    //顯示總金額
+            }
+
+        </script>
+</body>
+
+</html>
