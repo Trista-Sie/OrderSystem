@@ -104,92 +104,117 @@
         <div class="totalAmount">總數量: <input class="amount col-md-3" id="totalAmount" type="text" class="form-control"
                 value="0">
         </div>
-        <div class="purchase"><img class="purchase_icon" src="./assets/purchase.png"></div>
+        <img class="purchase_icon" src="./assets/purchase.png">
     </div>
-    <class="order_amount">
-        <br>數量: <input class="order col-md-3" id="order_amount" type="text" class="form-control" value="0"></br>
-        </div>
 
-        <script>
-            /*
-            Product = [
-                '焦糖星冰樂','drink1',130
-                '焦糖可可星冰樂','drink2',145
-                '英式紅茶','drink3',110
-                '冰蜜柚紅茶','drink4',125
-                '太妃核果風味那堤','drink5',145
-                '耶誕雪人巧克力那堤','drink6',150
-                '法式千層薄餅','cake1',95
-                '咖啡巧克力松露蛋糕','cake2',85
-                '提拉米蘇千層薄餅','cake3',100
-                '可可伯爵薄餅','cake4',130`
-                ]
-            */
-            var memu_name = ['焦糖星冰樂', '焦糖可可星冰樂', '英式紅茶', '冰蜜柚紅茶', '太妃核果風味那堤', '耶誕雪人巧克力那堤', '法式千層薄餅', '咖啡巧克力松露蛋糕', '提拉米蘇千層薄餅', '可可伯爵薄餅']
-            var menu_img = ['drink1', 'drink2', 'drink3', 'drink4', 'drink5', 'drink6', 'cake1', 'cake2', 'cake3', 'cake4']
-            var menu_price = [130, 145, 110, 125, 145, 150, 95, 85, 100, 130]
+    <script>
+        /*
+        Product = [
+            '焦糖星冰樂','drink1',130
+            '焦糖可可星冰樂','drink2',145
+            '英式紅茶','drink3',110
+            '冰蜜柚紅茶','drink4',125
+            '太妃核果風味那堤','drink5',145
+            '耶誕雪人巧克力那堤','drink6',150
+            '法式千層薄餅','cake1',95
+            '咖啡巧克力松露蛋糕','cake2',85
+            '提拉米蘇千層薄餅','cake3',100
+            '可可伯爵薄餅','cake4',130`
+            ]
+        */
+        var memu_name = ['焦糖星冰樂', '焦糖可可星冰樂', '英式紅茶', '冰蜜柚紅茶', '太妃核果風味那堤', '耶誕雪人巧克力那堤', '法式千層薄餅', '咖啡巧克力松露蛋糕', '提拉米蘇千層薄餅', '可可伯爵薄餅']
+        var menu_img = ['drink1', 'drink2', 'drink3', 'drink4', 'drink5', 'drink6', 'cake1', 'cake2', 'cake3', 'cake4']
+        var menu_price = [130, 145, 110, 125, 145, 150, 95, 85, 100, 130]
 
-            var menu_string = "";   //商品清單
-            function makingMenu() {
-                for (var i = 0; i < memu_name.length; i++) {
-                    menu_string += `<li class="list-group-item"><img class="product_img" src="./assets/product/${menu_img[i]}.jpg">${memu_name[i]}
+        var menu_string = "";   //商品清單
+        function makingMenu() {
+            for (var i = 0; i < memu_name.length; i++) {
+                menu_string += `<li class="list-group-item"><img class="product_img" src="./assets/product/${menu_img[i]}.jpg">${memu_name[i]}
                     ${menu_price[i]}元`
 
-                    menu_string += `<div class="amount_block">`
-                    // 數量增加
-                    menu_string += `<img class="plus_minus" onclick="clickPlus('innum${i}',${menu_price[i]})" src="./assets/plus.png">`
-                    menu_string += `<input class="amount col-md-3" id="innum${i}" type="text" class="form-control" value="0">`
-                    // 數量減少
-                    menu_string += `<img class="plus_minus" onclick="clickMinus('innum${i}',${menu_price[i]})" src="./assets/minus.png"></div></li>`
+                menu_string += `<div class="amount_block">`
+                // 數量增加
+                menu_string += `<img class="plus_minus" onclick="clickPlus('innum${i}',${menu_price[i]})" src="./assets/plus.png">`
+                menu_string += `<input class="amount col-md-3" id="innum${i}" type="text" class="form-control" value="0">`
+                // 數量減少
+                menu_string += `<img class="plus_minus" onclick="clickMinus('innum${i}',${menu_price[i]})" src="./assets/minus.png"></div></li>`
+            }
+            document.getElementById('menu').innerHTML = menu_string
+        }
 
-                    //save_order();   //呼叫函式存取購買清單
+        var order_list = [
+            { name: '焦糖星冰樂', price: 0, amount: 0 },
+            { name: '焦糖可可星冰樂', price: 0, amount: 0 },
+            { name: '英式紅茶', price: 0, amount: 0 },
+            { name: '冰蜜柚紅茶', price: 0, amount: 0 },
+            { name: '太妃核果風味那堤', price: 0, amount: 0 },
+            { name: '耶誕雪人巧克力那堤', price: 0, amount: 0 },
+            { name: '法式千層薄餅', price: 0, amount: 0 },
+            { name: '咖啡巧克力松露蛋糕', price: 0, amount: 0 },
+            { name: '提拉米蘇千層薄餅', price: 0, amount: 0 },
+            { name: '可可伯爵薄餅', price: 0, amount: 0 }
+        ]
+        // 存取購買清單
+        function save_order(save_num, save_price) {
+            for (var i = 0; i < memu_name.length; i++) {
+                if (save_num != 0) {
+                    Object.defineProperty(order_list, 'amount', 'price', {
+                        Writable: true,
+                        configurable: true,
+                        enumerable: true,
+                    });
+                    console.log(order_list)
                 }
-                document.getElementById('menu').innerHTML = menu_string
+                else { break }
             }
-            var order_string = "";  // 儲存購買清單
-            // onclick="save_order('bnum${i}',${menu_price[i]})" 
-            function save_order(save_num, save_price) {
-                var num = document.getElementById(save_num).value;
-                num = parseInt(num);
-                for (var i = 0; i < memu_name.length; i++) {
-                    if (num != 0) {
-                        order_string += `<li class="list_order_group"><img calss="product_img" src="./assets/product/${menu_img[i]}.jpg">${memu_name[i]}${menu_price[i]}元</li>`
-                        // onclick = "clickPurchase('buy_num${i}',${menu_price[i]})">
-                    }
-                }
-            }
-            /*
-            function clickPurchase() {
-    
-            }*/
-            function clickPlus(orderNum, product_price) {
-                var num = document.getElementById(orderNum).value
-                num = parseInt(num);
-                num++   //每點一次+數量就增加 1 
-                document.getElementById(orderNum).value = num   //顯示增加後的數量
-                document.getElementById("totalAmount").value = num;
-                var sMoney = parseInt(document.getElementById("totalPrice").value);
-                sMoney += 1 * product_price     //計算總金額
-                document.getElementById("totalPrice").value = sMoney    //顯示總金額
-            }
+        }
 
-            function clickMinus(orderNum, product_price) {
-                var num = document.getElementById(orderNum).value
-                num = parseInt(num);
-                var tmp = num
-                num--   //每點一次+數量就減少 1 
-                if (num < 0) { num = 0 }    //排除顯示負數的情況 並重新預設為0
-                document.getElementById(orderNum).value = num   //顯示減少後的數量
-                document.getElementById("totalAmount").value = num;
-                var sMoney = parseInt(document.getElementById("totalPrice").value)
-                if (tmp != 0) {     //排除總價扣除沒有購買商品之金額
-                    sMoney -= 1 * product_price      //計算總金額
-                }
-                if (sMoney < 0) { sMoney = 0 } //排除總金額顯示負數的情況 並重新預設為0
-                document.getElementById("totalPrice").value = sMoney    //顯示總金額
-            }
+        var t1 = 0;
+        var t2 = 0;
+        var total_num = 0;
 
-        </script>
+        function clickPlus(orderNum, product_price) {   //數量增加
+            var num = document.getElementById(orderNum).value
+            num = parseInt(num);
+            num++   //每點一次+數量就增加 1 
+            t1++
+            saveAmount();
+            // console.log("t1= ", t1);
+            document.getElementById(orderNum).value = num   //顯示增加後的數量
+            save_order(num, product_price);
+            var sMoney = parseInt(document.getElementById("totalPrice").value);
+            sMoney += 1 * product_price     //計算總金額
+            document.getElementById("totalPrice").value = sMoney    //顯示總金額
+        }
+
+        function clickMinus(orderNum, product_price) {  //數量減少
+            var num = document.getElementById(orderNum).value
+            num = parseInt(num);
+            var tmp = num
+            num--   //每點一次+數量就減少 1 
+            t2++
+            if (num < 0) { num = 0; t1 = 0; t2 = 0 }    //排除顯示負數的情況 並重新預設為0
+            document.getElementById(orderNum).value = num   //顯示減少後的數量
+            saveAmount();
+            save_order(num, product_price);
+            // console.log("t2= ", t2)
+            var sMoney = parseInt(document.getElementById("totalPrice").value)
+            if (tmp != 0) {     //排除總價扣除沒有購買商品之金額
+                sMoney -= 1 * product_price      //計算總金額
+            }
+            if (sMoney < 0) { sMoney = 0 } //排除總金額顯示負數的情況 並重新預設為0
+            document.getElementById("totalPrice").value = sMoney    //顯示總金額
+        }
+        function saveAmount() {     //計算總數量
+            if (t1 < t2) { total_num = 0 }
+            else if (t1 > t2) { total_num = t1 - t2 }
+            // console.log("t1= ", t1)
+            // console.log("t2=", t2)
+            // console.log("total_num =", total_num);
+            document.getElementById("totalAmount").value = total_num;
+            total_num = 0;
+        }
+    </script>
 </body>
 
 </html>
