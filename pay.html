@@ -1,12 +1,163 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Document</title>
+    <title>Order Cart</title>
+
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+        integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"
+        integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n"
+        crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
+        integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
+        crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"
+        integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6"
+        crossorigin="anonymous"></script>
+
+
+    <style>
+        .Navbar {
+            width: 100%;
+            display: inline-block;
+            text-align: center;
+        }
+
+        .navbar-brand {
+            font-size: 47px;
+        }
+
+        .info_icon {
+            float: right;
+            width: 40px;
+            height: 40px
+        }
+
+        .purchase_icon {
+            /* display: inline-block; */
+            float: right;
+            width: 45px;
+            height: 45px
+        }
+
+        .end_block {
+            display: inline-block;
+            margin: 20px;
+        }
+
+        .totalPrice {
+            display: inline-block;
+            text-align: left;
+            font-size: large;
+        }
+
+        .totalAmount {
+            display: inline-block;
+            text-align: left;
+            font-size: large;
+        }
+
+        .time_block {
+            text-align: right;
+            font-size: larger;
+        }
+
+        .purchase_way {
+            text-align: left;
+        }
+    </style>
 </head>
-<body>
-    
+
+<body onload="orderMenu()">
+    <div class="Navbar">
+        <div class="navbar-brand">
+            <b>Order list</b></div>
+        <img class="info_icon" src="./assets/info_icon.png">
+    </div>
+
+    <div class="orderMenu" id="orderMenu"></div>
+    <div class="end_block">
+        <div class="totalPrice">總金額: <input class="amount col-md-3" id="totalPrice" type="text" class="form-control"
+                value="0">
+        </div>
+
+        <div class="totalAmount">總數量: <input class="amount col-md-3" id="totalAmount" type="text" class="form-control"
+                value="0">
+        </div>
+
+        <div class="purchase_way">
+            <font size="5">付款方式: </font>
+
+            <form action="/action_page.php">
+                <input type="radio" name="choice" value="ibon">7-11 ibon<br>
+                <input type="radio" name="choice" value="WebATM">WebATM 轉帳<br>
+                <input type="radio" name="choice" value="getPay" checked>超商取貨付款<br><br>
+            </form>
+        </div>
+
+    </div>
+    <div class="time_block" id="time_block"></div>
+    <input class="turn_page" type="button" onclick="pre_page()" value="取消訂單"></input>
+    <input class="buy" type="button" onclick="alert('下單成功 !')" value="確認購買"></input>
+
+    <script>
+
+        var NowDate = new Date();
+        var d = NowDate.getDay();
+        var dayNames = new Array("星期日", "星期一", "星期二", "星期三", "星期四", "星期五", "星期六");
+        document.getElementById('time_block').innerHTML = '下單時間：' + NowDate.toLocaleString() + '（' + dayNames[d] + '）';
+
+        //購物清單
+        var url = location.search;  //接收購物清單字串
+        // turn 購物清單字串
+        turn = decodeURI(url)   //轉為UTF-8
+        // console.log("turn=", turn)
+        var str1 = turn.split('=');
+        // console.log("str1= ", str1);
+        var str2 = str1[1].split('&');
+        //str2[0]為購買清單       
+        // console.log("str2= ", str2)
+        orderMenu(str2[0]);
+
+        //購買總數量
+        var tmp = str1[2].split('&');
+        // console.log("tmp= ", tmp);
+        var order_amount = tmp[0];
+        // console.log("order_amount= ", order_amount)
+        document.getElementById("totalAmount").value = order_amount;
+
+        // 總金額
+        var total_money = str1[3];
+        // console.log("total_money= ", total_money);
+        document.getElementById("totalPrice").value = total_money;
+
+        function orderMenu(s_str) {
+            var orderList = JSON.parse(s_str);  // 字串轉成JSON格式
+            // console.log("orderList=", orderList)
+
+            var orderString = "";
+            for (var i = 0; i < orderList.length; i++) {
+                // console.log(i, "amount", orderList[i].amount)
+                // console.log(i, "price", orderList[i].price)
+                if ((orderList[i].amount != 0) && (orderList[i].price != 0)) {
+                    orderString += `<li class="list-group-item">${orderList[i].name}
+                    ${orderList[i].price}元
+                    ${orderList[i].amount}個</li>`
+                }
+            }
+            // console.log(orderList[i])
+            // console.log("orderString=", orderString);
+            document.getElementById('orderMenu').innerHTML = orderString
+        }
+
+        function pre_page() {
+            window.open('index.html', "_blank");
+        }
+    </script>
 </body>
+
 </html>
