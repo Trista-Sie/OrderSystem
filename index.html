@@ -171,7 +171,7 @@
                     element.price += product_price;
                     element.amount++;
                     sMoney += element.price;
-                    total_num += element.amount;
+                    total_num++;
                 }
                 // console.log("sMoney= ", sMoney)
                 // console.log("total_num= ", total_num)
@@ -192,8 +192,8 @@
             order_list.forEach(element => {
                 if (element.name == product_name) {
                     sMoney = sMoney - element.price;
-                    console.log("sMoney= ", sMoney);
-                    total_num = total_num - (element.amount + 1);
+                    // console.log("sMoney= ", sMoney);
+                    total_num--;
 
                     element.price -= product_price;
                     element.amount--;
