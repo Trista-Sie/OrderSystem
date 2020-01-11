@@ -163,7 +163,7 @@
         function clickPlus(orderNum, product_price, product_name) {   //數量增加
             var num = document.getElementById(orderNum).value
             num = parseInt(num);
-            num++   //每點一次+數量就增加 1 
+            num++   //每點一次+數量就增加 1
             document.getElementById(orderNum).value = num   //顯示增加後的數量
 
             order_list.forEach(element => {
